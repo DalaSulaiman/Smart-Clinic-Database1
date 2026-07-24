@@ -1,5 +1,7 @@
 DROP DATABASE IF EXISTS SmartClinic;
-CREATE DATABASE IF NOT EXISTS SmartClinic;
+
+CREATE DATABASE SmartClinic;
+
 USE SmartClinic;
 
 
@@ -12,8 +14,7 @@ CREATE TABLE Patients(
     First_Name VARCHAR(50) NOT NULL,
     Last_Name VARCHAR(50) NOT NULL,
     Phone VARCHAR(15) UNIQUE NOT NULL,
-    DOB DATE NOT NULL,
-    Patient_Type VARCHAR(20) NOT NULL
+    DOB DATE NOT NULL
 );
 
 
@@ -27,7 +28,7 @@ CREATE TABLE Inpatients(
     Room_Number INT NOT NULL,
     Bed_Number INT NOT NULL,
 
-    FOREIGN KEY (Patient_ID) 
+    FOREIGN KEY (Patient_ID)
     REFERENCES Patients(Patient_ID)
 );
 
@@ -41,7 +42,7 @@ CREATE TABLE Outpatients(
     Patient_ID INT PRIMARY KEY,
     Arrival_Time TIME NOT NULL,
 
-    FOREIGN KEY (Patient_ID) 
+    FOREIGN KEY (Patient_ID)
     REFERENCES Patients(Patient_ID)
 );
 
@@ -151,137 +152,128 @@ CREATE TABLE Payments(
     FOREIGN KEY(Appointment_ID)
     REFERENCES Appointments(Appointment_ID)
 );
-USE SmartClinic;
-
-
--- =========================
--- Insert Patients (5 Records)
--- =========================
-
-INSERT INTO Patients
-VALUES
-(1,'Sara','Ali','0501234567','2002-03-15','Outpatient'),
-(2,'Mohammed','Ahmed','0509876543','1998-08-20','Inpatient'),
-(3,'Lama','Khalid','0561112233','2001-12-10','Outpatient'),
-(4,'Aisha','Saad','0556666666','2000-11-25','Inpatient'),
-(5,'Yousef','Nasser','0557777777','1997-04-18','Outpatient');
 
 
 
 -- =========================
--- Insert Inpatients
+-- INSERT DATA
 -- =========================
 
-INSERT INTO Inpatients
-VALUES
+
+-- Patients (10)
+
+INSERT INTO Patients VALUES
+(1,'Sara','Ali','0501234567','2002-03-15'),
+(2,'Mohammed','Ahmed','0509876543','1998-08-20'),
+(3,'Lama','Khalid','0561112233','2001-12-10'),
+(4,'Aisha','Saad','0556666666','2000-11-25'),
+(5,'Yousef','Nasser','0557777777','1997-04-18'),
+(6,'Noor','Hassan','0558888888','1999-05-20'),
+(7,'Reem','Salem','0559999999','2003-02-11'),
+(8,'Fahad','Ali','0541111111','1996-09-30'),
+(9,'Maha','Omar','0542222222','2001-06-25'),
+(10,'Khalid','Sami','0543333333','1995-12-01');
+
+
+
+-- Inpatients (5)
+
+INSERT INTO Inpatients VALUES
 (2,101,1),
-(4,102,2);
+(4,102,2),
+(6,103,3),
+(8,104,4),
+(10,105,5);
 
 
 
--- =========================
--- Insert Outpatients
--- =========================
+-- Outpatients (5)
 
-INSERT INTO Outpatients
-VALUES
+INSERT INTO Outpatients VALUES
 (1,'09:30:00'),
 (3,'10:00:00'),
-(5,'11:30:00');
+(5,'11:30:00'),
+(7,'12:00:00'),
+(9,'01:00:00');
 
 
 
--- =========================
--- Insert Doctors (5 Records)
--- =========================
+-- Doctors (5)
 
-INSERT INTO Doctors
-VALUES
+INSERT INTO Doctors VALUES
 (1,'Ahmed Hassan','Cardiology','0551234567','ahmed@clinic.com'),
 (2,'Fatimah Ali','Neurology','0551111111','fatimah@clinic.com'),
 (3,'Mona Ali','Dentistry','0552222222','mona@clinic.com'),
-(4,'Omar Salem','Dermatology','0553333333','omar@clinic.com'),
-(5,'Nora Ahmed','Pediatrics','0554444444','nora@clinic.com');
+(4,'Omar Khalid','Dermatology','0553333333','omar@clinic.com'),
+(5,'Sara Mohammed','Pediatrics','0554444444','sara@clinic.com');
+
+
+
+-- Appointments (5)
+
+INSERT INTO Appointments VALUES
+(1,'2025-01-10','09:00:00','Completed',1,1),
+(2,'2025-01-11','10:00:00','Completed',2,2),
+(3,'2025-01-12','11:00:00','Pending',3,3),
+(4,'2025-01-13','12:00:00','Completed',4,4),
+(5,'2025-01-14','01:00:00','Pending',5,5);
+
+
+
+-- Medical Reports (5)
+
+INSERT INTO Medical_Reports VALUES
+(1,'Heart Check','2025-01-10','Normal',1),
+(2,'Headache','2025-01-11','Medication given',2),
+(3,'Dental Pain','2025-01-12','Treatment required',3),
+(4,'Skin Allergy','2025-01-13','Cream prescribed',4),
+(5,'Child Fever','2025-01-14','Follow up',5);
+
+
+
+-- Medicines (5)
+
+INSERT INTO Medicines VALUES
+(1,'Aspirin','500mg',20.00),
+(2,'Panadol','250mg',10.00),
+(3,'Antibiotic','100mg',35.00),
+(4,'Cream','50mg',25.00),
+(5,'Vitamin','100mg',15.00);
+
+
+
+-- Prescriptions
+
+INSERT INTO Prescriptions VALUES
+(1,1,'Take once daily',10),
+(2,2,'Take twice daily',20),
+(3,3,'After meal',15),
+(4,4,'Apply daily',5),
+(5,5,'Once daily',30);
+
+
+
+-- Payments
+
+INSERT INTO Payments VALUES
+(1,200,'2025-01-10','Cash',1),
+(2,300,'2025-01-11','Card',2),
+(3,150,'2025-01-12','Cash',3),
+(4,250,'2025-01-13','Card',4),
+(5,100,'2025-01-14','Cash',5);
 
 
 
 -- =========================
--- Insert Appointments (5 Records)
+-- CHECK OUTPUTS
 -- =========================
 
-INSERT INTO Appointments
-VALUES
-(1,'2025-09-15','10:00:00','Completed',1,1),
-(2,'2025-09-16','09:00:00','Completed',2,2),
-(3,'2025-09-17','11:00:00','Scheduled',3,3),
-(4,'2025-09-18','01:00:00','Completed',4,4),
-(5,'2025-09-19','03:00:00','Scheduled',5,5);
-
-
-
--- =========================
--- Insert Medical Reports (5 Records)
--- =========================
-
-INSERT INTO Medical_Reports
-VALUES
-(1,'Flu','2025-09-15','Patient recovering well',1),
-(2,'Headache','2025-09-16','Patient is stable',2),
-(3,'Allergy','2025-09-17','Medication prescribed',3),
-(4,'Fever','2025-09-18','Need rest and follow up',4),
-(5,'Routine Checkup','2025-09-19','Normal examination',5);
-
-
-
--- =========================
--- Insert Medicines (5 Records)
--- =========================
-
-INSERT INTO Medicines
-VALUES
-(1,'Paracetamol','500mg',15.00),
-(2,'Antibiotic','250mg',25.00),
-(3,'Vitamin C','1000mg',20.00),
-(4,'Pain Killer','50mg',30.00),
-(5,'Skin Cream','20g',18.00);
-
-
-
--- =========================
--- Insert Prescriptions (5 Records)
--- =========================
-
-INSERT INTO Prescriptions
-VALUES
-(1,1,'Take twice daily after meals',10),
-(2,2,'Take one tablet daily',5),
-(3,3,'Take once daily',7),
-(4,4,'Use when needed',3),
-(5,5,'Apply twice daily',2);
-
-
-
--- =========================
--- Insert Payments (5 Records)
--- =========================
-
-INSERT INTO Payments
-VALUES
-(1,150.00,'2025-09-15','Cash',1),
-(2,250.00,'2025-09-16','Card',2),
-(3,100.00,'2025-09-17','Online',3),
-(4,300.00,'2025-09-18','Card',4),
-(5,200.00,'2025-09-19','Cash',5);
 SELECT * FROM Patients;
-
+SELECT * FROM Inpatients;
+SELECT * FROM Outpatients;
 SELECT * FROM Doctors;
-
 SELECT * FROM Appointments;
-
 SELECT * FROM Medical_Reports;
-
 SELECT * FROM Medicines;
-
 SELECT * FROM Prescriptions;
-
 SELECT * FROM Payments;
