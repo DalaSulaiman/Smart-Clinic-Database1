@@ -277,3 +277,80 @@ SELECT * FROM Medical_Reports;
 SELECT * FROM Medicines;
 SELECT * FROM Prescriptions;
 SELECT * FROM Payments;
+-- =========================
+-- TASK 3: SQL OPERATIONS
+-- =========================
+
+-- 1. SELECT
+SELECT *
+FROM Doctors
+WHERE Specialization = 'Cardiology';
+
+
+-- 2. JOIN
+SELECT p.First_Name,
+       p.Last_Name,
+       d.Doctor_Name,
+       a.Appointment_Date
+FROM Appointments a
+JOIN Patients p
+    ON a.Patient_ID = p.Patient_ID
+JOIN Doctors d
+    ON a.Doctor_ID = d.Doctor_ID;
+
+
+-- 3. NESTED QUERY
+SELECT Payment_ID,
+       Amount,
+       Payment_Date
+FROM Payments
+WHERE Amount > (
+    SELECT AVG(Amount)
+    FROM Payments
+);
+
+
+-- 4. AGGREGATE FUNCTION + GROUP BY
+SELECT Payment_Method,
+       COUNT(*) AS Total_Transactions,
+       SUM(Amount) AS Total_Revenue
+FROM Payments
+GROUP BY Payment_Method;
+
+
+-- 5. UPDATE
+UPDATE Doctors
+SET Specialization = 'General Cardiology'
+WHERE Doctor_ID = 1;
+
+
+-- 6. DELETE
+DELETE FROM Payments
+WHERE Payment_ID = 5;
+
+
+-- 7. VIEW
+CREATE VIEW Inpatient_Details AS
+SELECT p.Patient_ID,
+       p.First_Name,
+       p.Last_Name,
+       i.Room_Number,
+       i.Bed_Number
+FROM Patients p
+JOIN Inpatients i
+    ON p.Patient_ID = i.Patient_ID;
+
+
+-- 8. TRIGGER
+DELIMITER //
+
+CREATE TRIGGER check_payment_amount
+BEFORE INSERT ON Payments
+FOR EACH ROW
+BEGIN
+    IF NEW.Amount < 0 THEN
+        SET NEW.Amount = 0;
+    END IF;
+END //
+
+DELIMITER ;
